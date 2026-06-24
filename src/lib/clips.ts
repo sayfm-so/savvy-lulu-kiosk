@@ -66,3 +66,15 @@ export function nextAck(): string {
 export function clipUrl(name: string): string {
   return `${import.meta.env.BASE_URL}clips/${name}.wav`
 }
+
+// Soundboard: every approved line in BOTH languages on one screen (no toggle).
+export const BOARD = [
+  { ar: 'ترحيب', en: 'Welcome', arClip: 'welcome', enClip: 'welcome_en', icon: '👋' },
+  { ar: 'وش هي الفعالية', en: 'What is the event', arClip: 'what', enClip: 'what_en', icon: '🎉' },
+  { ar: 'متى العروض', en: 'Dates / when', arClip: 'when', enClip: 'when_en', icon: '📅' },
+  { ar: 'وين الفروع', en: 'Where / branches', arClip: 'where', enClip: 'where_en', icon: '📍' },
+  { ar: 'المنتجات', en: 'Products', arClip: 'products', enClip: 'products_en', icon: '🛍️' },
+  { ar: 'العروض والخصومات', en: 'Offers & discounts', arClip: 'offers', enClip: 'offers_en', icon: '🏷️' },
+  { ar: 'التصوير والسوشيال', en: 'Photos & social', arClip: 'social', enClip: 'social_en', icon: '📸' },
+  { ar: 'خاتمة', en: 'Closing', arClip: 'ending', enClip: 'ending_en', icon: '🎬' },
+] as const

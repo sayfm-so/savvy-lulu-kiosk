@@ -85,6 +85,23 @@ body {
 .ask-input::placeholder { color: var(--muted); }
 .ask-input:focus { border-color: var(--cyan); }
 
+/* soundboard buttons */
+.sb-btn {
+  display: flex; align-items: center; gap: 0.75rem;
+  width: 100%; min-height: 54px; padding: 0.65rem 1rem;
+  border-radius: 16px;
+  background: oklch(0.96 0.012 250 / 0.06);
+  border: 1px solid var(--line);
+  color: var(--ink); font-size: 1.05rem;
+  transition: background 0.15s var(--ease), transform 0.1s var(--ease), box-shadow 0.2s var(--ease), border-color 0.15s;
+}
+.sb-btn:hover { background: oklch(0.96 0.012 250 / 0.10); }
+.sb-active {
+  background: linear-gradient(180deg, var(--gold) 0, var(--gold-deep) 100%);
+  color: var(--accent-ink); border-color: transparent;
+  box-shadow: 0 8px 26px oklch(0.83 0.132 85 / 0.38);
+}
+
 .glass {
   background: oklch(0.96 0.014 88 / 0.05);
   border: 1px solid var(--line);

@@ -1,58 +1,61 @@
-import { useState } from 'react'
-import BrandBar from './components/BrandBar'
-import MicButton from './components/MicButton'
-import VoiceOrb from './components/VoiceOrb'
-import Splash from './components/Splash'
-import StatusDisplay from './components/StatusDisplay'
-import TopicGrid from './components/TopicGrid'
+import { BOARD } from './lib/clips'
 import { useKiosk } from './hooks/use-kiosk'
 
 export default function App() {
-  const k = useKiosk()
-  const [text, setText] = useState('')
+  const { play, stop, playing } = useKiosk()
 
-  if (k.phase === 'splash') {
-    return <Splash ui={k.ui} lang={k.lang} setLang={k.setLang} onStart={k.enter} />
-  }
-
-  const onAsk = (e: React.FormEvent) => {
-    e.preventDefault()
-    const v = text.trim()
-    if (!v) return
-    setText('')
-    void k.askText(v)
-  }
+  const Btn = ({ active, icon, label, onClick, dir }: {
+    active: boolean; icon: string; label: string; onClick: () => void; dir: 'rtl' | 'ltr'
+  }) => (
+    <button
+      type="button"
+      dir={dir}
+      onClick={onClick}
+      className={`sb-btn btn-press focus-ring ${active ? 'sb-active' : ''}`}
+    >
+      <span className="text-2xl shrink-0" aria-hidden="true">{active ? '🔊' : icon}</span>
+      <span className="flex-1 font-bold leading-tight" style={{ textAlign: dir === 'rtl' ? 'right' : 'left' }}>{label}</span>
+    </button>
+  )
 
   return (
-    <div dir={k.lang === 'ar' ? 'rtl' : 'ltr'} className="h-full w-full flex flex-col items-center px-4 py-3 gap-2">
-      <BrandBar lang={k.lang} setLang={k.setLang} />
+    <div className="h-full w-full flex flex-col px-4 py-3 gap-3">
+      {/* header */}
+      <header className="w-full max-w-4xl mx-auto flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5">
+          <span className="h-2.5 w-2.5 rounded-full" style={{ background: 'var(--accent)' }} />
+          <span className="font-extrabold text-base sm:text-lg">مستر سافي · لولو ليتس كونيكت ٢٠٢٦</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-sm" style={{ color: 'var(--muted)' }}>٢٥ يونيو – ٥ يوليو</span>
+          <button
+            type="button"
+            onClick={stop}
+            disabled={!playing}
+            className="btn-press focus-ring glass rounded-full px-4 py-1.5 text-sm font-bold disabled:opacity-30"
+          >
+            ⏹ إيقاف
+          </button>
+        </div>
+      </header>
 
-      <section className="flex-1 w-full flex flex-col items-center justify-center min-h-0">
-        <VoiceOrb state={k.face} />
-        <StatusDisplay status={k.status} transcript={k.transcript} />
-      </section>
-
-      <MicButton onClick={k.toggleRecord} busy={k.busy} listening={k.recording} ui={k.ui} />
-
-      <form onSubmit={onAsk} className="w-full max-w-xl flex gap-2 mb-1">
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          disabled={k.busy || k.recording}
-          placeholder={k.ui.placeholder}
-          className="ask-input flex-1 rounded-full px-5 py-3 text-base outline-none disabled:opacity-50"
-        />
-        <button
-          type="submit"
-          disabled={k.busy || k.recording || !text.trim()}
-          className="btn-press focus-ring rounded-full px-6 py-3 font-extrabold disabled:opacity-40"
-          style={{ background: 'var(--gold)', color: 'var(--accent-ink)' }}
-        >
-          {k.ui.ask}
-        </button>
-      </form>
-
-      <TopicGrid lang={k.lang} pickLabel={k.ui.pickTopic} onPick={k.answer} disabled={k.busy || k.recording} />
+      {/* board: both languages, one screen */}
+      <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 w-full max-w-4xl mx-auto min-h-0 overflow-y-auto">
+        <section className="flex flex-col gap-2.5">
+          <h2 className="eyebrow text-sm" style={{ color: 'var(--accent)' }}>العربية</h2>
+          {BOARD.map((b) => (
+            <Btn key={b.arClip} dir="rtl" icon={b.icon} label={b.ar}
+              active={playing === b.arClip} onClick={() => play(b.arClip)} />
+          ))}
+        </section>
+        <section className="flex flex-col gap-2.5">
+          <h2 className="eyebrow text-sm" style={{ color: 'var(--accent)' }} dir="ltr">English</h2>
+          {BOARD.map((b) => (
+            <Btn key={b.enClip} dir="ltr" icon={b.icon} label={b.en}
+              active={playing === b.enClip} onClick={() => play(b.enClip)} />
+          ))}
+        </section>
+      </div>
     </div>
   )
 }
