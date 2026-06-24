@@ -75,6 +75,16 @@ body {
 .topic-row:hover { background: oklch(0.96 0.014 88 / 0.05); }
 .topic-num { color: var(--gold); font-weight: 800; font-variant-numeric: tabular-nums; }
 
+.ask-input {
+  background: oklch(0.96 0.012 250 / 0.07);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: inherit;
+  transition: border-color 0.18s var(--ease);
+}
+.ask-input::placeholder { color: var(--muted); }
+.ask-input:focus { border-color: var(--cyan); }
+
 .glass {
   background: oklch(0.96 0.014 88 / 0.05);
   border: 1px solid var(--line);

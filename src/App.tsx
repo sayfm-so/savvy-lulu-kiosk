@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import BrandBar from './components/BrandBar'
 import MicButton from './components/MicButton'
 import VoiceOrb from './components/VoiceOrb'
@@ -8,8 +9,17 @@ import { useKiosk } from './hooks/use-kiosk'
 
 export default function App() {
   const k = useKiosk()
+  const [text, setText] = useState('')
 
   if (k.phase === 'splash') return <Splash onStart={k.enter} />
+
+  const onAsk = (e: React.FormEvent) => {
+    e.preventDefault()
+    const t = text.trim()
+    if (!t) return
+    setText('')
+    void k.askText(t)
+  }
 
   return (
     <div className="h-full w-full flex flex-col items-center px-4 py-3 gap-2">
@@ -20,14 +30,28 @@ export default function App() {
         <StatusDisplay status={k.status} transcript={k.transcript} />
       </section>
 
-      <MicButton
-        onClick={k.startListening}
-        busy={k.busy}
-        listening={k.listening}
-        micAvailable={k.micAvailable}
-      />
+      <MicButton onClick={k.toggleRecord} busy={k.busy} listening={k.recording} micAvailable={true} />
 
-      <TopicGrid onPick={k.answer} disabled={k.busy || k.listening} />
+      {/* ask anything (text) — works on every device incl. iPad */}
+      <form onSubmit={onAsk} className="w-full max-w-xl flex gap-2 mb-1">
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          disabled={k.busy || k.recording}
+          placeholder="اكتب سؤالك لمستر سافي…"
+          className="ask-input flex-1 rounded-full px-5 py-3 text-base outline-none disabled:opacity-50"
+        />
+        <button
+          type="submit"
+          disabled={k.busy || k.recording || !text.trim()}
+          className="btn-press focus-ring rounded-full px-6 py-3 font-extrabold disabled:opacity-40"
+          style={{ background: 'var(--gold)', color: 'var(--accent-ink)' }}
+        >
+          اسأل
+        </button>
+      </form>
+
+      <TopicGrid onPick={k.answer} disabled={k.busy || k.recording} />
     </div>
   )
 }
