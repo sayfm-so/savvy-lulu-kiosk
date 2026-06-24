@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"set -e\\nMEN=\\\"/Users/sm/Dev/gbrain-sources/repos/mujoco_menagerie/unitree_g1/assets\\\"\\nP=\\\"/Users/sm/Dev/savvy-lulu-kiosk/public\\\"\\ncp \\\"$MEN/head_link.STL\\\" \\\"$P/g1_head.stl\\\"\\ncp \\\"$MEN/...",
+  "error": "Exit code 1\ncopied G1 meshes -> public/\n932784 /Users/sm/Dev/savvy-lulu-kiosk/public/g1_head.stl\n176784 /Users/sm/Dev/savvy-lulu-kiosk/public/g1_shoulder_l.stl\n176784 /Users/sm/Dev/savvy-lulu-kiosk/public/g1_shoulder_r.stl\n2570584 /Users/sm/Dev/savvy-lulu-kiosk/public/g1_torso.stl\n\n=== head_link bbox (extent in meters) ===\nTraceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\n  File \"<frozen codecs>\", line 325, in decode\nUnicodeDecodeError: 'utf-8' codec can't decode byte 0xc1...",
+  "timestamp": "2026-06-24T11:27:53.582Z",
+  "retry_count": 1
+}

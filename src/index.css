@@ -1,0 +1,190 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Mr Savvy · Lulu Let's Connect 2026
+   Scene: a shopper on a bright Lulu floor walks up to the robot
+   with the chest tablet and glances for a few seconds. The screen
+   must make the 3D robot the hero and read as a premium flagship
+   tech-event installation, not a supermarket-green poster.
+   Strategy: COMMITTED warm charcoal (espresso) surface, GOLD
+   accent (festive, "أضخم حدث"), the robot's CYAN as the cool
+   focal pop. All OKLCH; neutrals tinted warm.
+   ============================================================ */
+:root {
+  --bg-0: oklch(0.245 0.058 262);
+  --bg-1: oklch(0.105 0.035 265);
+  --ink: oklch(0.965 0.012 250);
+  --muted: oklch(0.84 0.03 250 / 0.66);
+  --line: oklch(0.96 0.012 250 / 0.14);
+
+  --gold: oklch(0.83 0.132 85);
+  --gold-deep: oklch(0.72 0.13 68);
+  --cyan: oklch(0.68 0.17 245);   /* electric blue, matches the LED ring */
+  --glow: var(--cyan);
+  --accent: var(--gold);
+  --accent-ink: oklch(0.24 0.045 70);
+
+  --r-lg: 28px;
+  --r-md: 18px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  font-family: 'Tajawal', system-ui, sans-serif;
+  color: var(--ink);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  background:
+    radial-gradient(70% 55% at 50% 18%, oklch(0.68 0.17 245 / 0.22) 0, transparent 60%),
+    radial-gradient(90% 60% at 50% 122%, oklch(0.83 0.132 85 / 0.08) 0, transparent 55%),
+    radial-gradient(120% 100% at 50% 40%, var(--bg-0) 0%, var(--bg-1) 82%);
+}
+
+/* ---------- typography ---------- */
+.display { font-weight: 900; letter-spacing: -0.01em; line-height: 1.02; }
+.eyebrow { font-weight: 700; letter-spacing: 0.08em; }
+
+/* ---------- buttons ---------- */
+.btn-press { transition: transform 0.12s var(--ease), box-shadow 0.2s var(--ease); }
+.btn-press:active { transform: scale(0.96); }
+.focus-ring:focus-visible { outline: 3px solid var(--cyan); outline-offset: 4px; }
+
+.voice-cta {
+  background: linear-gradient(180deg, var(--gold) 0, var(--gold-deep) 100%);
+  color: var(--accent-ink);
+  box-shadow: 0 12px 34px oklch(0.83 0.132 85 / 0.32), inset 0 1px 0 oklch(0.98 0.02 95 / 0.55);
+}
+.voice-cta.is-listening {
+  background: linear-gradient(180deg, var(--cyan) 0, oklch(0.7 0.13 220) 100%);
+  color: var(--accent-ink);
+  box-shadow: 0 12px 34px oklch(0.85 0.13 218 / 0.4);
+}
+.voice-idle { animation: invite 2.8s var(--ease) infinite; }
+@keyframes invite {
+  0%, 100% { box-shadow: 0 12px 34px oklch(0.83 0.132 85 / 0.32), 0 0 0 0 oklch(0.83 0.132 85 / 0.5); }
+  60% { box-shadow: 0 12px 34px oklch(0.83 0.132 85 / 0.32), 0 0 0 22px oklch(0.83 0.132 85 / 0); }
+}
+
+/* ---------- topic menu (editorial) ---------- */
+.topic-row { transition: background 0.18s var(--ease), transform 0.12s var(--ease); border-radius: var(--r-md); }
+.topic-row:active { transform: scale(0.97); }
+.topic-row:hover { background: oklch(0.96 0.014 88 / 0.05); }
+.topic-num { color: var(--gold); font-weight: 800; font-variant-numeric: tabular-nums; }
+
+.glass {
+  background: oklch(0.96 0.014 88 / 0.05);
+  border: 1px solid var(--line);
+}
+
+/* ============================================================
+   Robot face wrapper
+   ============================================================ */
+.face-wrap { position: relative; width: min(50vh, 380px); aspect-ratio: 1; display: grid; place-items: center; }
+.face-svg { width: 100%; height: 100%; animation: float 6s ease-in-out infinite; }
+.face-canvas { width: 100% !important; height: 100% !important; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+
+/* photo avatar (the user's actual robot) — alive: float + 3D tilt + face glow */
+.tilt-wrap {
+  position: absolute; inset: 0;
+  perspective: 1100px;
+  animation: float 6s ease-in-out infinite;
+}
+.robot-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: contain;
+  -webkit-mask-image: radial-gradient(74% 78% at 50% 44%, #000 56%, transparent 100%);
+  mask-image: radial-gradient(74% 78% at 50% 44%, #000 56%, transparent 100%);
+  filter: saturate(1.08) contrast(1.05);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  animation: tilt3d 9s ease-in-out infinite;
+}
+@keyframes tilt3d {
+  0%, 100% { transform: rotateY(-9deg) rotateX(3deg) scale(1.03); }
+  50%      { transform: rotateY(9deg)  rotateX(-3deg) scale(1.03); }
+}
+/* breathing glow over the LED face */
+.face-glow {
+  position: absolute; left: 50%; top: 33%; width: 42%; height: 24%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.78 0.16 245 / 0.55) 0, transparent 70%);
+  filter: blur(10px); opacity: 0.45; pointer-events: none;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+.face-listening .face-glow { opacity: 0.9; animation: breathe 1.4s ease-in-out infinite; }
+.face-talking .face-glow { opacity: 0.7; animation: breathe 0.45s ease-in-out infinite; }
+
+/* voice orb (replaces the on-screen robot face) */
+.orb-wrap { position: relative; width: min(44vh, 320px); aspect-ratio: 1; display: grid; place-items: center; }
+.orb-halo {
+  position: absolute; inset: 4%; border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.68 0.17 245 / 0.4) 0, transparent 64%);
+  filter: blur(22px); opacity: 0.6; animation: breathe 3.4s ease-in-out infinite;
+}
+.orb-core {
+  width: 56%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 36% 28%, oklch(0.6 0.13 240) 0, oklch(0.26 0.07 250) 70%, oklch(0.17 0.05 255) 100%);
+  box-shadow:
+    inset 0 3px 16px oklch(0.95 0.04 240 / 0.45),
+    inset 0 -10px 24px oklch(0.05 0.04 255 / 0.7),
+    0 18px 50px oklch(0.06 0.04 255 / 0.7),
+    0 0 60px oklch(0.68 0.17 245 / 0.4);
+  display: grid; place-items: center;
+  animation: float 6s ease-in-out infinite;
+}
+.eq { display: flex; gap: 9px; align-items: center; height: 36%; }
+.eq-bar {
+  width: 9px; height: 100%; border-radius: 6px;
+  background: linear-gradient(180deg, oklch(0.95 0.07 230), oklch(0.8 0.14 235));
+  box-shadow: 0 0 12px oklch(0.85 0.14 235), 0 0 24px oklch(0.7 0.16 240 / 0.6);
+  transform-origin: center; transform: scaleY(0.45);
+}
+.orb-idle .eq-bar { animation: eqIdle 2.6s ease-in-out infinite; }
+.orb-listening .eq-bar { animation: eqIdle 1.1s ease-in-out infinite; }
+.orb-talking .eq-bar { animation: eqTalk 0.5s ease-in-out infinite; }
+.eq-bar.b1 { animation-delay: 0.12s; }
+.eq-bar.b2 { animation-delay: 0.24s; }
+.eq-bar.b3 { animation-delay: 0.16s; }
+.eq-bar.b4 { animation-delay: 0.06s; }
+@keyframes eqIdle { 0%, 100% { transform: scaleY(0.4); } 50% { transform: scaleY(0.7); } }
+@keyframes eqTalk { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1.7); } }
+.orb-ring {
+  position: absolute; width: 60%; aspect-ratio: 1; border-radius: 50%;
+  border: 2px solid oklch(0.7 0.16 240 / 0.7); opacity: 0;
+}
+.orb-listening .orb-ring { animation: ripple 1.8s var(--ease) infinite; }
+.orb-listening .orb-ring.r2 { animation-delay: 0.9s; }
+
+.aura {
+  position: absolute; inset: 6%; border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.68 0.17 245 / 0.38) 0, transparent 62%);
+  filter: blur(18px); opacity: 0.55; transition: opacity 0.4s var(--ease);
+}
+.face-listening .aura { opacity: 0.95; animation: breathe 1.8s ease-in-out infinite; }
+.face-talking .aura { opacity: 0.78; }
+@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+.ring { position: absolute; inset: 12%; border-radius: 50%; border: 2px solid oklch(0.96 0.02 240); opacity: 0; }
+.face-listening .ring { animation: ripple 1.9s var(--ease) infinite; }
+.face-listening .ring.r2 { animation-delay: 0.95s; }
+@keyframes ripple { 0% { transform: scale(0.9); opacity: 0.5; } 100% { transform: scale(1.4); opacity: 0; } }
+
+/* SVG fallback animations */
+.face-idle .eye { animation: blink 5s infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+.mouth-rest { opacity: 0; transition: opacity 0.2s; }
+.face-idle .mouth-rest, .face-listening .mouth-rest { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
