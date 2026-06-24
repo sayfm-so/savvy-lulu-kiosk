@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"echo \\\"=== check for API keys (presence only — values never printed) ===\\\"\\n# Anthropic\\nif [ -n \\\"$ANTHROPIC_API_KEY\\\" ]; then echo \\\"ANTHROPIC_API_KEY (env): FOUND\\\"; else echo \\\"ANTHROP...",
-  "error": "Exit code 1\n=== check for API keys (presence only — values never printed) ===\nANTHROPIC_API_KEY (env): not set\n(eval):4: no matches found: /Users/sm/.config/anthropic/*",
-  "timestamp": "2026-06-24T12:40:11.991Z",
+  "tool_input_preview": "{\"command\":\"cd /Users/sm/Dev/savvy-lulu-kiosk\\necho \\\"=== .vercel/project.json ===\\\"\\ncat .vercel/project.json 2>&1\\necho \\\"\\\"\\necho \\\"=== locate vercel auth token (not printed) ===\\\"\\nfor p in \\\"$HOM...",
+  "error": "Exit code 1\n=== .vercel/project.json ===\n{\"projectId\":\"prj_HCLZHA12aPyglScaJYwVqAoL3Xg5\",\"orgId\":\"team_3sWhOfdvOHVoEeeKnro3Oovh\",\"projectName\":\"savvy-lulu-kiosk\"}\n=== locate vercel auth token (not printed) ===\ntoken file: /Users/sm/Library/Application Support/com.vercel.cli/auth.json\nhas token: True",
+  "timestamp": "2026-06-24T13:19:51.081Z",
   "retry_count": 1
 }

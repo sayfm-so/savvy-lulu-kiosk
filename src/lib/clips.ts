@@ -48,3 +48,13 @@ export function nextAck(): string {
 export function clipUrl(name: string): string {
   return `${import.meta.env.BASE_URL}clips/${name}.wav`
 }
+
+export function fileUrl(file: string): string {
+  return `${import.meta.env.BASE_URL}clips/${file}`
+}
+
+// Scripted English opening speeches (operator-triggered, verbatim, Brian voice).
+export const SPEECHES = [
+  { id: 'welcome', label: 'خطاب الترحيب', file: 'welcome_speech.mp3' },
+  { id: 'logo', label: 'إعلان الشعار', file: 'logo_reveal.mp3' },
+]

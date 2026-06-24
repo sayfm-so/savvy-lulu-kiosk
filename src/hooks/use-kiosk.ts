@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import type { FaceState } from '../components/face-state'
 import {
-  ANSWER_CLIP, CATEGORY_LABEL, WELCOME, clipUrl, nextAck, type Category,
+  ANSWER_CLIP, CATEGORY_LABEL, WELCOME, clipUrl, fileUrl, nextAck, type Category,
 } from '../lib/clips'
 
 export type Phase = 'splash' | 'kiosk'
@@ -45,6 +45,14 @@ export function useKiosk() {
     setStatus(`الموضوع: ${CATEGORY_LABEL[cat]}`)
     void playClips([nextAck(), ANSWER_CLIP[cat]])
   }, [playClips])
+
+  // scripted English opening speech (operator-triggered)
+  const playSpeech = useCallback(async (file: string) => {
+    if (busy) return
+    stopAudio(); setBusy(true); setTranscript(''); setStatus('🎤 خطاب الافتتاح…'); setFace('talking')
+    await playUrl(fileUrl(file))
+    setFace('idle'); setBusy(false)
+  }, [busy, stopAudio])
 
   // live answer audio (base64 mp3 from the backend)
   const playB64 = (b64: string) =>
@@ -130,7 +138,7 @@ export function useKiosk() {
     void playClips([WELCOME])
   }, [playClips])
 
-  return { phase, face, busy, recording, status, transcript, enter, answer, askText, toggleRecord }
+  return { phase, face, busy, recording, status, transcript, enter, answer, askText, toggleRecord, playSpeech }
 }
 
 function blobToB64(blob: Blob): Promise<string> {

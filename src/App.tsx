@@ -5,6 +5,7 @@ import VoiceOrb from './components/VoiceOrb'
 import Splash from './components/Splash'
 import StatusDisplay from './components/StatusDisplay'
 import TopicGrid from './components/TopicGrid'
+import { SPEECHES } from './lib/clips'
 import { useKiosk } from './hooks/use-kiosk'
 
 export default function App() {
@@ -50,6 +51,21 @@ export default function App() {
           اسأل
         </button>
       </form>
+
+      {/* scripted English opening speeches (operator-triggered) */}
+      <div className="w-full max-w-xl flex gap-2">
+        {SPEECHES.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => k.playSpeech(s.file)}
+            disabled={k.busy || k.recording}
+            className="btn-press focus-ring glass flex-1 rounded-xl py-2.5 text-sm font-bold disabled:opacity-50"
+          >
+            🎤 {s.label} <span style={{ color: 'var(--muted)' }}>· EN</span>
+          </button>
+        ))}
+      </div>
 
       <TopicGrid onPick={k.answer} disabled={k.busy || k.recording} />
     </div>
